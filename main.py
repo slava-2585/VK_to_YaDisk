@@ -11,8 +11,6 @@ with open('token.txt', 'r') as file_object:
     token_ya = file_object.readline().strip()
 
 version = '5.131'
-url = 'https://api.vk.com/method/'
-url_test = 'https://sun9-77.userapi.com/impf/zYNdlqs1MjZPPCwHOvD7b7gI5wQ9kCUeeHN-ow/-i2A_-ZO7GU.jpg?size=1280x1184&quality=96&sign=9a774e2eeced8aad7c41856e77b2ca2b&c_uniq_tag=C_NW9L8NEBuWHsSCuMWwz8kh6BqnOs6vt3PUcDc-f84&type=album'
 dir = 'vk'
 
     
@@ -68,9 +66,5 @@ def upload_disk(dict={}, dir='vk'):
     
 if __name__ == '__main__':
     my_id = '8792649'
-    id_olga = '1173138'
-    #pprint(get_photo(my_id))
-    upload_disk(get_photo(my_id), dir)
-    #upload_disk()
-    
+    upload_disk(get_photo(my_id), dir)    
     
