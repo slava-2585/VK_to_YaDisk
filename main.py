@@ -1,10 +1,11 @@
 import requests
 from pprint import pprint
-import vk_api
-import yadisk
 from time import *
 import json
+
 from progress.bar import IncrementalBar
+import yadisk
+import vk_api
 
 with open('token.txt', 'r') as file_object:
     token = file_object.readline().strip()
@@ -14,12 +15,13 @@ version = '5.131'
 dir = 'vk'
 
     
-def get_photo (id):
+def get_photo (id, count):
     params = {
                 'owner_id': id,
                 'album_id': 'profile',
                 'v':version,
-                'extended': 1
+                'extended': 1,
+                'count': count
             }
     
     session = vk_api.VkApi(token=token)
@@ -42,14 +44,13 @@ def get_photo (id):
         
     return all_list_photo
               
-def upload_disk(dict={}, dir='vk'):
-    bar_upload = IncrementalBar('Upload Files disk', max = len(dict))
+def upload_disk(list_ph=[], dir=''):
+    bar_upload = IncrementalBar('Upload Files disk', max = len(list_ph))
     list_upload_file = []
     ya = yadisk.YaDisk(token=token_ya)
     if not ya.exists(dir):
         ya.mkdir(dir)
-    #ya.upload_url(url_test, 'vk/ya.jpeg')
-    for file in dict:
+    for file in list_ph:
         bar_upload.next()
         dic_upload_file = {}
         name_photo = f'{dir}/{ctime(file["date"])}_{file["likes"]}.jpeg'
@@ -57,8 +58,8 @@ def upload_disk(dict={}, dir='vk'):
         dic_upload_file['file_name'] = name_photo
         dic_upload_file['size'] = file['size']
         list_upload_file.append(dic_upload_file)
-        with open ('vk_photo.txt', 'w') as f:
-            json.dump(list_upload_file, f, indent=4)
+    with open ('vk_photo.json', 'w') as f:
+        json.dump(list_upload_file, f, indent=4)
     bar_upload.finish()
     print('Upload Finish')
     return list_upload_file
@@ -66,5 +67,5 @@ def upload_disk(dict={}, dir='vk'):
     
 if __name__ == '__main__':
     my_id = '8792649'
-    upload_disk(get_photo(my_id), dir)    
+    upload_disk(get_photo('1', 6), dir)    
     
